@@ -16,25 +16,18 @@ var (
 	MaterialIcon = inflate(data)
 	// MaterialIconFonts is font data, key is size.
 	MaterialIconFonts = map[int]gxui.Font{}
-
-	dr gxui.Driver
 )
-
-// SetDriver is set init driver.
-func SetDriver(driver gxui.Driver) {
-	dr = driver
-}
 
 // CreateIcon is create icon control
 func CreateIcon(theme gxui.Theme, icon rune, size int) gxui.Label {
-	if size < 0 {
+	if theme == nil || size < 0 {
 		return nil
 	}
 	control := theme.CreateLabel()
 	font, ok := MaterialIconFonts[size]
 	if !ok {
 		var err error
-		font, err = dr.CreateFont(MaterialIcon, size)
+		font, err = theme.Driver().CreateFont(MaterialIcon, size)
 		if err != nil {
 			return nil
 		}
